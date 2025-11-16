@@ -142,30 +142,39 @@ export default function GamePage() {
 
   // Handle next round button click
   const handleNextRound = () => {
+    // Immediately stop timer and hide result
+    setIsTimerActive(false);
     setShowRoundResult(false);
     setTimeUpProcessed(false); // Reset the time up flag
+    
     const nextRound = round + 1;
     setRound(nextRound);
-    
+
     // Generate a new puzzle that hasn't been used
     let newPuzzle = generatePuzzle(nextRound, category!);
     let attempts = 0;
     const maxAttempts = 50;
-    
+
     // Try to find a puzzle that hasn't been used yet
     while (usedPuzzleAnswers.has(newPuzzle.answer) && attempts < maxAttempts) {
       newPuzzle = generatePuzzle(nextRound, category!);
       attempts++;
     }
-    
+
     // Add the new puzzle answer to used set
     setUsedPuzzleAnswers((prev) => new Set([...prev, newPuzzle.answer]));
-    
+
     setPuzzle(newPuzzle);
     setFeedback({ type: null, message: "" });
     setHintShown(false);
-    setIsTimerActive(true);
+    
+    // Reset timer counter first, then activate after a small delay
     setTimerReset((prev) => prev + 1);
+    
+    // Small delay to ensure timer is fully reset before activating
+    requestAnimationFrame(() => {
+      setIsTimerActive(true);
+    });
   };
 
   // Handle hint request
@@ -246,7 +255,7 @@ export default function GamePage() {
         <Timer
           duration={15}
           onTimeUp={handleTimeUp}
-          isActive={isTimerActive}
+          isActive={isTimerActive && !showRoundResult}
           onReset={timerReset}
         />
 

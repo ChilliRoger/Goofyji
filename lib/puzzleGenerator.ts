@@ -37,7 +37,7 @@ export function generatePuzzle(
   // Try to get a meaningful puzzle first
   if (category) {
     const meaningfulPuzzle = getRandomMeaningfulPuzzle(category, difficulty);
-    
+
     if (meaningfulPuzzle) {
       return {
         emojis: meaningfulPuzzle.emojis.join(" + "),
@@ -132,7 +132,7 @@ export function checkAnswerWithAlternatives(
   if (!items || items.length === 0) {
     return false;
   }
-  
+
   const alternatives = getAlternativeAnswers(items);
   const normalizedGuess = guess.toLowerCase().replace(/[\s\-_]/g, "");
 
@@ -145,22 +145,19 @@ export function checkAnswerWithAlternatives(
 /**
  * Check answer for any puzzle type (supports both predefined and generated)
  */
-export function checkPuzzleAnswer(
-  guess: string,
-  puzzle: Puzzle
-): boolean {
+export function checkPuzzleAnswer(guess: string, puzzle: Puzzle): boolean {
   const normalizedGuess = guess.toLowerCase().replace(/[\s\-_]/g, "");
   const normalizedAnswer = puzzle.answer.toLowerCase().replace(/[\s\-_]/g, "");
-  
+
   // Direct answer check
   if (normalizedGuess === normalizedAnswer) {
     return true;
   }
-  
+
   // If we have items, check alternatives
   if (puzzle.items && puzzle.items.length > 0) {
     return checkAnswerWithAlternatives(guess, puzzle.items);
   }
-  
+
   return false;
 }

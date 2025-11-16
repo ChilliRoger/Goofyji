@@ -198,7 +198,7 @@ export function getItemsByCategory(
   if (category === "mixed") {
     return [...foodItems, ...natureItems, ...objectItems, ...actionItems];
   }
-  
+
   switch (category) {
     case "food":
       return foodItems;

@@ -4,9 +4,7 @@ interface CategorySelectorProps {
   onSelect: (category: string) => void;
 }
 
-export default function CategorySelector({
-  onSelect,
-}: CategorySelectorProps) {
+export default function CategorySelector({ onSelect }: CategorySelectorProps) {
   const categories = [
     {
       id: "objects",

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 interface TimerProps {
   duration: number; // in seconds
@@ -16,32 +16,61 @@ export default function Timer({
   onReset,
 }: TimerProps) {
   const [timeLeft, setTimeLeft] = useState(duration);
+  const timeUpCalledRef = useRef(false);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   // Reset timer when onReset changes
   useEffect(() => {
     setTimeLeft(duration);
+    timeUpCalledRef.current = false;
+    
+    // Clear any existing interval when resetting
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
   }, [onReset, duration]);
 
   // Countdown logic
   useEffect(() => {
-    if (!isActive) return;
+    // Clear existing interval first
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
 
-    if (timeLeft <= 0) {
-      onTimeUp();
+    if (!isActive) {
       return;
     }
 
-    const interval = setInterval(() => {
+    if (timeLeft <= 0) {
+      if (!timeUpCalledRef.current) {
+        timeUpCalledRef.current = true;
+        onTimeUp();
+      }
+      return;
+    }
+
+    intervalRef.current = setInterval(() => {
       setTimeLeft((prev) => {
-        if (prev <= 1) {
-          clearInterval(interval);
+        const newTime = prev - 1;
+        if (newTime <= 0) {
+          if (intervalRef.current) {
+            clearInterval(intervalRef.current);
+            intervalRef.current = null;
+          }
           return 0;
         }
-        return prev - 1;
+        return newTime;
       });
     }, 1000);
 
-    return () => clearInterval(interval);
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+    };
   }, [timeLeft, isActive, onTimeUp]);
 
   // Calculate percentage for progress bar
