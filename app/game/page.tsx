@@ -146,7 +146,7 @@ export default function GamePage() {
     setIsTimerActive(false);
     setShowRoundResult(false);
     setTimeUpProcessed(false); // Reset the time up flag
-    
+
     const nextRound = round + 1;
     setRound(nextRound);
 
@@ -167,10 +167,10 @@ export default function GamePage() {
     setPuzzle(newPuzzle);
     setFeedback({ type: null, message: "" });
     setHintShown(false);
-    
+
     // Reset timer counter first, then activate after a small delay
     setTimerReset((prev) => prev + 1);
-    
+
     // Small delay to ensure timer is fully reset before activating
     requestAnimationFrame(() => {
       setIsTimerActive(true);

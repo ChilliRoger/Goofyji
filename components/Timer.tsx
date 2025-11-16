@@ -23,7 +23,7 @@ export default function Timer({
   useEffect(() => {
     setTimeLeft(duration);
     timeUpCalledRef.current = false;
-    
+
     // Clear any existing interval when resetting
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
