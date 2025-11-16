@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { generateRoast } from "@/lib/roastGenerator";
 
 interface GameOverScreenProps {
@@ -12,6 +13,7 @@ export default function GameOverScreen({
   score,
   onRestart,
 }: GameOverScreenProps) {
+  const router = useRouter();
   const [roast, setRoast] = useState("");
 
   useEffect(() => {
@@ -35,7 +37,7 @@ export default function GameOverScreen({
           <div className="roast-emoji">🔥</div>
         </div>
 
-        <button onClick={onRestart} className="restart-button">
+        <button onClick={() => router.push("/")} className="restart-button">
           Try Again
         </button>
 

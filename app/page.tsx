@@ -1,11 +1,13 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { playStartSound, preloadAllSounds } from "@/lib/soundManager";
+import HelpPopup from "@/components/HelpPopup";
 
 export default function HomePage() {
   const router = useRouter();
+  const [showHelp, setShowHelp] = useState(false);
 
   useEffect(() => {
     // Preload sounds on home page
@@ -21,62 +23,52 @@ export default function HomePage() {
 
   return (
     <main className="home-page">
+      {showHelp && <HelpPopup onClose={() => setShowHelp(false)} />}
+      
       <div className="home-container">
         <h1 className="game-title">
-          <span className="title-emoji">🎮</span>
-          Goofyji
-          <span className="title-emoji">🎮</span>
+           Goofyji 
         </h1>
 
+        <div className="header-buttons">
+          <button onClick={() => setShowHelp(true)} className="help-button">
+            ❓ Help
+          </button>
+          <button onClick={() => router.push("/guide")} className="guide-button">
+            📖 Emoji Guide
+          </button>
+        </div>
+
         <p className="game-description">
-          Guess the word from emojis!
+          🎮 Guess the word from emojis!
           <br />
-          Gets harder as you go! 🔥
+          🔥 Gets harder as you go!
         </p>
 
         <div className="features">
           <div className="feature">
-            <span className="feature-emoji">🧩</span>
-            <span>Infinite Rounds</span>
+            <span>♾️ Infinite Rounds</span>
           </div>
           <div className="feature">
-            <span className="feature-emoji">📈</span>
-            <span>Increasing Difficulty</span>
+            <span>📈 Difficulty+</span>
           </div>
           <div className="feature">
-            <span className="feature-emoji">⏱️</span>
-            <span>15 Second Timer</span>
+            <span>⏱️ 15 Seconds</span>
           </div>
           <div className="feature">
-            <span className="feature-emoji">❤️</span>
-            <span>3 Lives</span>
+            <span>❤️ 3 Lives</span>
           </div>
           <div className="feature">
-            <span className="feature-emoji">🔥</span>
-            <span>Epic Roasts</span>
+            <span>😂 Epic Roasts</span>
           </div>
           <div className="feature">
-            <span className="feature-emoji">🎵</span>
-            <span>Funny Sounds</span>
+            <span>🎵 Fun Sounds</span>
           </div>
         </div>
 
         <button onClick={handleStartGame} className="start-button">
           Start Game
         </button>
-
-        <div className="instructions">
-          <h3>How to Play:</h3>
-          <ul>
-            <li>Look at the emoji combination</li>
-            <li>Type the word or phrase they represent</li>
-            <li>You have 15 seconds per round ⏱️</li>
-            <li>Get it right to earn points!</li>
-            <li>Wrong answer? No problem - see the answer & continue!</li>
-            <li>Run out of time = lose a life 💔</li>
-            <li>Lose all 3 lives = Game Over!</li>
-          </ul>
-        </div>
       </div>
     </main>
   );

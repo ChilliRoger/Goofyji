@@ -47,10 +47,10 @@ export default function CategorySelector({ onSelect }: CategorySelectorProps) {
         </p>
 
         <div className="category-grid">
-          {categories.map((category) => (
+          {categories.map((category, index) => (
             <button
               key={category.id}
-              className="category-card"
+              className={`category-card category-card-${index + 1}`}
               onClick={() => onSelect(category.id)}
             >
               <div className="category-emoji">{category.emoji}</div>
