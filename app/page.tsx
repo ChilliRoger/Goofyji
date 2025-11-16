@@ -26,7 +26,7 @@ export default function HomePage() {
       {showHelp && <HelpPopup onClose={() => setShowHelp(false)} />}
 
       <div className="home-container">
-        <h1 className="game-title">Goofyji</h1>
+        <h1 className="game-title">"Goofyji"</h1>
 
         <div className="header-buttons">
           <button onClick={() => setShowHelp(true)} className="help-button">

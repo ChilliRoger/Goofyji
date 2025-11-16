@@ -1,10 +1,13 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+
 interface CategorySelectorProps {
   onSelect: (category: string) => void;
 }
 
 export default function CategorySelector({ onSelect }: CategorySelectorProps) {
+  const router = useRouter();
   const categories = [
     {
       id: "objects",
@@ -41,6 +44,13 @@ export default function CategorySelector({ onSelect }: CategorySelectorProps) {
   return (
     <div className="category-overlay">
       <div className="category-container">
+        <button
+          onClick={() => router.push("/")}
+          className="category-back-button"
+        >
+          ← Back
+        </button>
+
         <h2 className="category-title">Choose Your Category</h2>
         <p className="category-subtitle">
           What type of words do you want to guess?

@@ -16,6 +16,7 @@
   --warning-color: #d4a574;
 
   --font-primary: "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive;
+  --font-title: "Pixelify Sans", "Press Start 2P", monospace;
   --font-secondary: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
   --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -88,13 +89,15 @@ body {
 }
 
 .game-title {
-  font-family: var(--font-primary);
-  font-size: 4rem;
+  font-family: var(--font-title);
+  font-size: 3.2rem;
   color: var(--primary-color);
   margin-bottom: 20px;
-  text-shadow: 4px 4px 0 var(--dark-color), 2px 2px 0 var(--accent-color);
-  font-weight: 900;
-  letter-spacing: 2px;
+  -webkit-text-stroke: 1.5px var(--dark-color);
+  font-weight: 700;
+  letter-spacing: 3px;
+  font-style: normal;
+  text-transform: uppercase;
 }
 
 .title-emoji {
@@ -687,6 +690,31 @@ body {
   animation: zoomIn 0.5s ease;
 }
 
+.category-back-button {
+  background: var(--secondary-color);
+  color: var(--light-color);
+  border: 3px solid var(--dark-color);
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 25px;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 var(--dark-color);
+  transition: var(--transition);
+  margin-bottom: 20px;
+  font-family: var(--font-secondary);
+}
+
+.category-back-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 4px 4px 0 var(--dark-color);
+}
+
+.category-back-button:active {
+  transform: translateY(0);
+  box-shadow: 2px 2px 0 var(--dark-color);
+}
+
 .category-title {
   font-family: var(--font-primary);
   font-size: 3rem;
@@ -1028,11 +1056,13 @@ body {
 /* RESPONSIVE DESIGN */
 @media (max-width: 768px) {
   .home-container {
-    padding: 30px 20px;
+    padding: 25px 15px;
+    max-height: 100vh;
   }
 
   .game-title {
-    font-size: 3rem;
+    font-size: 2.8rem;
+    margin-bottom: 15px;
   }
 
   .title-emoji {
@@ -1040,76 +1070,140 @@ body {
   }
 
   .game-description {
-    font-size: 1.1rem;
+    font-size: 1rem;
+    margin-bottom: 20px;
+  }
+
+  .header-buttons {
+    flex-direction: row;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .help-button,
+  .guide-button {
+    font-size: 0.9rem;
+    padding: 10px 20px;
   }
 
   .features {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 20px 0;
+  }
+
+  .feature {
+    padding: 12px 8px;
+    font-size: 0.85rem;
   }
 
   .start-button {
-    padding: 15px 40px;
-    font-size: 1.3rem;
+    padding: 15px 35px;
+    font-size: 1.2rem;
+    margin: 15px 0;
   }
 
   .game-header {
-    flex-direction: column;
-    gap: 15px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 12px 15px;
+  }
+
+  .quit-button {
+    font-size: 0.9rem;
+    padding: 8px 15px;
   }
 
   .score-counter {
-    gap: 20px;
+    gap: 15px;
+    font-size: 0.9rem;
+  }
+
+  .lives-container {
+    font-size: 1.2rem;
   }
 
   .emoji-container {
-    font-size: 3.5rem;
+    font-size: 3rem;
+    gap: 15px;
+  }
+
+  .emoji-display {
+    padding: 35px 25px;
+    min-width: auto;
+    width: 90%;
   }
 
   .guess-form {
     flex-direction: column;
+    gap: 12px;
+    width: 90%;
+  }
+
+  .guess-input {
+    width: 100%;
   }
 
   .submit-button {
     width: 100%;
+    padding: 14px 30px;
+  }
+
+  .hint-button {
+    width: 90%;
+    margin-top: 10px;
   }
 
   .game-over-content {
-    padding: 30px 20px;
+    padding: 25px 15px;
+    max-width: 90%;
   }
 
   .game-over-title {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
   }
 
   .final-score-value {
-    font-size: 3rem;
+    font-size: 2.5rem;
   }
 
   .roast-text {
+    font-size: 1rem;
+  }
+
+  .restart-button {
     font-size: 1.1rem;
+    padding: 14px 30px;
+  }
+
+  .category-overlay {
+    overflow-y: auto;
   }
 
   .category-container {
-    padding: 30px 20px;
+    padding: 25px 15px;
+    max-width: 90%;
+    max-height: 95vh;
+    overflow-y: auto;
   }
 
   .category-title {
-    font-size: 2rem;
+    font-size: 1.8rem;
   }
 
   .category-subtitle {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
 
   .category-grid {
-    flex-direction: column;
+    grid-template-columns: 1fr;
+    gap: 15px;
     max-width: 100%;
   }
 
-  .category-grid .category-card,
-  .category-grid .category-card:nth-child(n + 4) {
-    flex: 1 1 100%;
-    max-width: 100%;
+  .category-card {
+    padding: 25px 20px;
   }
 
   .category-emoji {
@@ -1117,47 +1211,100 @@ body {
   }
 
   .category-name {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
+  }
+
+  .category-description {
+    font-size: 0.85rem;
   }
 
   .round-result-content {
-    padding: 30px 20px;
+    padding: 25px 15px;
+    max-width: 90%;
   }
 
   .result-icon {
-    font-size: 3.5rem;
+    font-size: 3rem;
   }
 
   .result-title {
-    font-size: 2rem;
+    font-size: 1.8rem;
   }
 
   .answer-text {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
   }
 
   .next-round-button {
     font-size: 1.1rem;
-    padding: 15px 40px;
+    padding: 14px 35px;
+  }
+
+  .timer-container {
+    padding: 12px;
+  }
+
+  .timer-time {
+    font-size: 1.3rem;
   }
 }
 
 @media (max-width: 480px) {
+  .home-container {
+    padding: 20px 12px;
+  }
+
   .game-title {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
+  }
+
+  .game-description {
+    font-size: 0.95rem;
+  }
+
+  .header-buttons {
+    width: 100%;
+  }
+
+  .help-button,
+  .guide-button {
+    flex: 1;
+    font-size: 0.85rem;
+    padding: 8px 12px;
+  }
+
+  .features {
+    gap: 8px;
+    margin: 15px 0;
+  }
+
+  .feature {
+    padding: 10px 6px;
+    font-size: 0.8rem;
+  }
+
+  .start-button {
+    font-size: 1.1rem;
+    padding: 12px 30px;
   }
 
   .emoji-container {
     font-size: 2.5rem;
+    gap: 10px;
   }
 
   .emoji-display {
-    padding: 30px;
-    min-width: 250px;
+    padding: 25px 20px;
+    width: 95%;
+  }
+
+  .difficulty-badge {
+    font-size: 0.75rem;
+    padding: 4px 10px;
   }
 
   .score-value {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
   }
 
   .guess-input {
@@ -1167,7 +1314,96 @@ body {
 
   .submit-button {
     font-size: 1rem;
-    padding: 12px 20px;
+    padding: 12px 25px;
+  }
+
+  .hint-button {
+    font-size: 0.9rem;
+    padding: 10px 20px;
+  }
+
+  .game-over-title {
+    font-size: 2rem;
+  }
+
+  .final-score-value {
+    font-size: 2.2rem;
+  }
+
+  .roast-text {
+    font-size: 0.95rem;
+  }
+
+  .restart-button {
+    font-size: 1rem;
+    padding: 12px 25px;
+  }
+
+  .category-overlay {
+    overflow-y: auto;
+  }
+
+  .category-container {
+    padding: 20px 12px;
+    max-width: 95%;
+    max-height: 98vh;
+    overflow-y: auto;
+  }
+
+  .category-title {
+    font-size: 1.6rem;
+  }
+
+  .category-subtitle {
+    font-size: 0.95rem;
+    margin-bottom: 20px;
+  }
+
+  .category-card {
+    padding: 20px 15px;
+  }
+
+  .category-emoji {
+    font-size: 2.2rem;
+  }
+
+  .category-name {
+    font-size: 1.1rem;
+  }
+
+  .category-description {
+    font-size: 0.8rem;
+  }
+
+  .result-title {
+    font-size: 1.6rem;
+  }
+
+  .answer-text {
+    font-size: 1.2rem;
+  }
+
+  .next-round-button {
+    font-size: 1rem;
+    padding: 12px 30px;
+  }
+
+  .help-popup {
+    padding: 20px 15px;
+    max-width: 95%;
+  }
+
+  .help-header h2 {
+    font-size: 1.4rem;
+  }
+
+  .help-item p {
+    font-size: 0.9rem;
+  }
+
+  .got-it-button {
+    font-size: 1rem;
+    padding: 12px 30px;
   }
 }
 
