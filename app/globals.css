@@ -457,15 +457,20 @@ body {
   display: flex;
   flex-direction: column;
   gap: 15px;
+  align-items: center;
+  margin: 0 auto;
 }
 
 .guess-form {
   display: flex;
   gap: 10px;
+  width: 100%;
+  justify-content: center;
 }
 
 .guess-input {
   flex: 1;
+  max-width: 400px;
   padding: 15px 20px;
   font-size: 1.2rem;
   border: 3px solid var(--secondary-color);
@@ -473,6 +478,7 @@ body {
   outline: none;
   transition: var(--transition);
   font-family: var(--font-secondary);
+  text-align: center;
 }
 
 .guess-input:focus {
@@ -491,6 +497,9 @@ body {
   cursor: pointer;
   transition: var(--transition);
   white-space: nowrap;
+  display: block;
+  margin: 0 auto;
+  min-width: 150px;
 }
 
 .submit-button:hover:not(:disabled) {
@@ -514,6 +523,9 @@ body {
   border-radius: var(--border-radius);
   cursor: pointer;
   transition: var(--transition);
+  display: block;
+  margin: 0 auto;
+  min-width: 150px;
 }
 
 .hint-button:hover:not(:disabled) {
@@ -1108,8 +1120,8 @@ body {
   }
 
   .game-header {
-    flex-direction: row;
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: stretch;
     gap: 10px;
     padding: 12px 15px;
   }
@@ -1117,11 +1129,14 @@ body {
   .quit-button {
     font-size: 0.9rem;
     padding: 8px 15px;
+    align-self: flex-start;
   }
 
   .score-counter {
     gap: 15px;
     font-size: 0.9rem;
+    justify-content: space-between;
+    width: 100%;
   }
 
   .lives-container {
@@ -1129,14 +1144,16 @@ body {
   }
 
   .emoji-container {
-    font-size: 3rem;
-    gap: 15px;
+    font-size: 2.5rem;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
   }
 
   .emoji-display {
-    padding: 35px 25px;
+    padding: 25px 20px;
     min-width: auto;
-    width: 90%;
+    width: 95%;
   }
 
   .guess-form {
@@ -1186,10 +1203,17 @@ body {
   }
 
   .category-container {
-    padding: 25px 15px;
+    padding: 70px 15px 25px 15px;
     max-width: 90%;
     max-height: 95vh;
     overflow-y: auto;
+  }
+
+  .category-back-button {
+    top: 15px;
+    left: 15px;
+    padding: 8px 16px;
+    font-size: 0.9rem;
   }
 
   .category-title {
@@ -1348,14 +1372,22 @@ body {
   }
 
   .category-container {
-    padding: 20px 12px;
+    padding: 65px 12px 20px 12px;
     max-width: 95%;
     max-height: 98vh;
     overflow-y: auto;
   }
 
+  .category-back-button {
+    top: 12px;
+    left: 12px;
+    padding: 7px 14px;
+    font-size: 0.85rem;
+  }
+
   .category-title {
     font-size: 1.6rem;
+    margin-top: 0;
   }
 
   .category-subtitle {
