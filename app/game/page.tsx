@@ -9,9 +9,12 @@ import ScoreCounter from "@/components/ScoreCounter";
 import FeedbackMessage from "@/components/FeedbackMessage";
 import GameOverScreen from "@/components/GameOverScreen";
 import Timer from "@/components/Timer";
+import CategorySelector from "@/components/CategorySelector";
+import RoundResultPopup from "@/components/RoundResultPopup";
 import {
   generatePuzzle,
   checkAnswerWithAlternatives,
+  checkPuzzleAnswer,
   getHint,
 } from "@/lib/puzzleGenerator";
 import {
@@ -36,76 +39,85 @@ export default function GamePage() {
   const [isShaking, setIsShaking] = useState(false);
   const [timerReset, setTimerReset] = useState(0);
   const [isTimerActive, setIsTimerActive] = useState(true);
+  const [category, setCategory] = useState<
+    "objects" | "actions" | "nature" | "food" | "mixed" | null
+  >(null);
+  const [showCategorySelector, setShowCategorySelector] = useState(true);
+  const [showRoundResult, setShowRoundResult] = useState(false);
+  const [roundResultCorrect, setRoundResultCorrect] = useState(false);
+  const [usedPuzzleAnswers, setUsedPuzzleAnswers] = useState<Set<string>>(
+    new Set()
+  );
+  const [timeUpProcessed, setTimeUpProcessed] = useState(false);
 
   // Generate initial puzzle
   useEffect(() => {
-    setPuzzle(generatePuzzle(1));
-    setIsTimerActive(true);
-    setTimerReset((prev) => prev + 1);
-  }, []);
+    if (category) {
+      const newPuzzle = generatePuzzle(1, category);
+      setPuzzle(newPuzzle);
+      setUsedPuzzleAnswers(new Set([newPuzzle.answer]));
+      setIsTimerActive(true);
+      setTimerReset((prev) => prev + 1);
+    }
+  }, [category]);
+
+  // Handle category selection
+  const handleCategorySelect = (selectedCategory: string) => {
+    setCategory(
+      selectedCategory as "objects" | "actions" | "nature" | "food" | "mixed"
+    );
+    setShowCategorySelector(false);
+  };
 
   // Handle guess submission
   const handleGuess = (guess: string) => {
     if (!puzzle || gameOver) return;
 
-    const isCorrect = checkAnswerWithAlternatives(guess, puzzle.items);
+    const isCorrect = checkPuzzleAnswer(guess, puzzle);
 
     if (isCorrect) {
-      // Correct answer - increment score and move to next round
+      // Correct answer - pause timer and show popup
       setIsTimerActive(false);
       playCorrectSound();
       setScore(score + 1);
+      setRoundResultCorrect(true);
+      setShowRoundResult(true);
       setFeedback({
         type: "correct",
         message: `Correct! The answer was "${puzzle.answer}"`,
       });
-
-      // Generate next puzzle after a short delay
-      setTimeout(() => {
-        const nextRound = round + 1;
-        setRound(nextRound);
-        setPuzzle(generatePuzzle(nextRound));
-        setFeedback({ type: null, message: "" });
-        setHintShown(false);
-        setIsTimerActive(true);
-        setTimerReset((prev) => prev + 1);
-      }, 1500);
     } else {
-      // Wrong answer - show correct answer and move to next round (no life lost)
-      setIsTimerActive(false);
+      // Wrong answer - show feedback but don't move to next round
       playWrongSound();
       setIsShaking(true);
 
       setFeedback({
         type: "wrong",
-        message: `Wrong! The answer was "${puzzle.answer}"`,
+        message: "Try again!",
       });
 
       // Remove shake animation
       setTimeout(() => setIsShaking(false), 500);
 
-      // Move to next round after showing the correct answer
+      // Clear feedback after a delay
       setTimeout(() => {
-        const nextRound = round + 1;
-        setRound(nextRound);
-        setPuzzle(generatePuzzle(nextRound));
         setFeedback({ type: null, message: "" });
-        setHintShown(false);
-        setIsTimerActive(true);
-        setTimerReset((prev) => prev + 1);
-      }, 2500);
+      }, 2000);
     }
   };
 
   // Handle timer running out
   const handleTimeUp = () => {
-    if (gameOver || feedback.type === "correct") return;
+    if (gameOver || showRoundResult || timeUpProcessed) return;
 
+    setTimeUpProcessed(true);
     playWrongSound();
     const newLives = lives - 1;
     setLives(newLives);
     setIsShaking(true);
     setIsTimerActive(false);
+    setRoundResultCorrect(false);
+    setShowRoundResult(true);
 
     setFeedback({
       type: "wrong",
@@ -123,19 +135,37 @@ export default function GamePage() {
       playGameOverSound();
       setTimeout(() => {
         setGameOver(true);
+        setShowRoundResult(false);
       }, 1000);
-    } else {
-      // Move to next round after showing the correct answer
-      setTimeout(() => {
-        const nextRound = round + 1;
-        setRound(nextRound);
-        setPuzzle(generatePuzzle(nextRound));
-        setFeedback({ type: null, message: "" });
-        setHintShown(false);
-        setIsTimerActive(true);
-        setTimerReset((prev) => prev + 1);
-      }, 2500);
     }
+  };
+
+  // Handle next round button click
+  const handleNextRound = () => {
+    setShowRoundResult(false);
+    setTimeUpProcessed(false); // Reset the time up flag
+    const nextRound = round + 1;
+    setRound(nextRound);
+    
+    // Generate a new puzzle that hasn't been used
+    let newPuzzle = generatePuzzle(nextRound, category!);
+    let attempts = 0;
+    const maxAttempts = 50;
+    
+    // Try to find a puzzle that hasn't been used yet
+    while (usedPuzzleAnswers.has(newPuzzle.answer) && attempts < maxAttempts) {
+      newPuzzle = generatePuzzle(nextRound, category!);
+      attempts++;
+    }
+    
+    // Add the new puzzle answer to used set
+    setUsedPuzzleAnswers((prev) => new Set([...prev, newPuzzle.answer]));
+    
+    setPuzzle(newPuzzle);
+    setFeedback({ type: null, message: "" });
+    setHintShown(false);
+    setIsTimerActive(true);
+    setTimerReset((prev) => prev + 1);
   };
 
   // Handle hint request
@@ -163,7 +193,11 @@ export default function GamePage() {
     setGameOver(false);
     setFeedback({ type: null, message: "" });
     setHintShown(false);
-    setPuzzle(generatePuzzle(1));
+    setTimeUpProcessed(false);
+    setUsedPuzzleAnswers(new Set());
+    const newPuzzle = generatePuzzle(1, category!);
+    setPuzzle(newPuzzle);
+    setUsedPuzzleAnswers(new Set([newPuzzle.answer]));
     setIsTimerActive(true);
     setTimerReset((prev) => prev + 1);
   };
@@ -173,6 +207,12 @@ export default function GamePage() {
     router.push("/");
   };
 
+  // Show category selector first
+  if (showCategorySelector) {
+    return <CategorySelector onSelect={handleCategorySelect} />;
+  }
+
+  // Show loading screen while puzzle is being generated
   if (!puzzle) {
     return (
       <div className="loading-screen">
@@ -185,6 +225,14 @@ export default function GamePage() {
   return (
     <main className="game-page">
       {gameOver && <GameOverScreen score={score} onRestart={handleRestart} />}
+
+      {showRoundResult && puzzle && (
+        <RoundResultPopup
+          isCorrect={roundResultCorrect}
+          correctAnswer={puzzle.answer}
+          onNextRound={handleNextRound}
+        />
+      )}
 
       <div className="game-header">
         <button onClick={handleQuit} className="quit-button">
@@ -209,8 +257,8 @@ export default function GamePage() {
         <GuessInput
           onSubmit={handleGuess}
           onHint={handleHint}
-          disabled={gameOver || feedback.type === "correct"}
-          showHintButton={!hintShown}
+          disabled={gameOver || showRoundResult}
+          showHintButton={!hintShown && !showRoundResult}
         />
       </div>
 

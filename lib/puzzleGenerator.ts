@@ -1,66 +1,78 @@
 import { EmojiItem, getRandomItemsFromTier, allItems } from "./emojiData";
+import {
+  CategorizedEmojiItem,
+  getRandomCategoryItems,
+} from "./categorizedEmojiData";
+import {
+  getRandomMeaningfulPuzzle,
+  MeaningfulPuzzle,
+} from "./meaningfulPuzzles";
 
 export interface Puzzle {
   emojis: string;
   answer: string;
   difficulty: "easy" | "medium" | "hard";
-  items: EmojiItem[];
+  items: EmojiItem[] | CategorizedEmojiItem[];
 }
 
 /**
- * Generate a puzzle based on the current round/score
- * Difficulty scaling:
- * - Rounds 1-5: 2 emojis, easy tier
- * - Rounds 6-10: 3 emojis, mix of easy and medium
- * - Rounds 11-15: 4 emojis, medium tier
- * - Rounds 16+: 4-5 emojis, mix of medium and hard
+ * Generate a puzzle based on the current round/score with category support
+ * Uses predefined meaningful word combinations for better gameplay
  */
-export function generatePuzzle(round: number): Puzzle {
-  let itemCount: number;
+export function generatePuzzle(
+  round: number,
+  category?: "objects" | "actions" | "nature" | "food" | "mixed"
+): Puzzle {
   let difficulty: "easy" | "medium" | "hard";
-  let selectedItems: EmojiItem[];
 
+  // Determine difficulty based on round
   if (round <= 5) {
-    // Easy: 2 items from easy tier
-    itemCount = 2;
     difficulty = "easy";
-    selectedItems = getRandomItemsFromTier("easy", itemCount);
-  } else if (round <= 10) {
-    // Medium-easy: 3 items, mix of easy and medium
-    itemCount = 3;
-    difficulty = "medium";
-    const easyItems = getRandomItemsFromTier("easy", 2);
-    const mediumItems = getRandomItemsFromTier("medium", 1);
-    selectedItems = [...easyItems, ...mediumItems].sort(
-      () => Math.random() - 0.5
-    );
   } else if (round <= 15) {
-    // Medium: 4 items from medium tier
-    itemCount = 4;
     difficulty = "medium";
-    selectedItems = getRandomItemsFromTier("medium", itemCount);
-  } else if (round <= 20) {
-    // Medium-hard: 4 items, mix of medium and hard
-    itemCount = 4;
-    difficulty = "hard";
-    const mediumItems = getRandomItemsFromTier("medium", 2);
-    const hardItems = getRandomItemsFromTier("hard", 2);
-    selectedItems = [...mediumItems, ...hardItems].sort(
-      () => Math.random() - 0.5
-    );
   } else {
-    // Very hard: 5 items, mostly hard tier
-    itemCount = 5;
     difficulty = "hard";
-    const mediumItems = getRandomItemsFromTier("medium", 1);
-    const hardItems = getRandomItemsFromTier("hard", 4);
-    selectedItems = [...mediumItems, ...hardItems].sort(
-      () => Math.random() - 0.5
-    );
   }
 
-  // Combine emojis and words
-  const emojis = selectedItems.map((item) => item.emoji).join(" ");
+  // Try to get a meaningful puzzle first
+  if (category) {
+    const meaningfulPuzzle = getRandomMeaningfulPuzzle(category, difficulty);
+    
+    if (meaningfulPuzzle) {
+      return {
+        emojis: meaningfulPuzzle.emojis.join(" + "),
+        answer: meaningfulPuzzle.answer,
+        difficulty: meaningfulPuzzle.difficulty,
+        items: [], // We don't need items for predefined puzzles
+      };
+    }
+  }
+
+  // Fallback to random combination if no meaningful puzzle found
+  let itemCount: number;
+  let selectedItems: CategorizedEmojiItem[] | EmojiItem[];
+
+  if (round <= 5) {
+    itemCount = 2;
+  } else if (round <= 10) {
+    itemCount = 3;
+  } else if (round <= 15) {
+    itemCount = 3;
+  } else if (round <= 20) {
+    itemCount = 4;
+  } else {
+    itemCount = 4;
+  }
+
+  // Use category-based selection if category is provided
+  if (category) {
+    selectedItems = getRandomCategoryItems(category, difficulty, itemCount);
+  } else {
+    selectedItems = getRandomItemsFromTier(difficulty, itemCount);
+  }
+
+  // Combine emojis and words with + separator
+  const emojis = selectedItems.map((item) => item.emoji).join(" + ");
   const answer = selectedItems.map((item) => item.word).join("");
 
   return {
@@ -92,7 +104,9 @@ export function getHint(answer: string): string {
 /**
  * Get alternative acceptable answers (for compound words that can be written differently)
  */
-export function getAlternativeAnswers(items: EmojiItem[]): string[] {
+export function getAlternativeAnswers(
+  items: EmojiItem[] | CategorizedEmojiItem[]
+): string[] {
   const words = items.map((item) => item.word);
 
   // Generate variations: joined, space-separated, hyphenated
@@ -111,8 +125,14 @@ export function getAlternativeAnswers(items: EmojiItem[]): string[] {
  */
 export function checkAnswerWithAlternatives(
   guess: string,
-  items: EmojiItem[]
+  items: EmojiItem[] | CategorizedEmojiItem[]
 ): boolean {
+  // If items is empty, we're using a predefined puzzle
+  // This shouldn't happen as we pass the answer directly
+  if (!items || items.length === 0) {
+    return false;
+  }
+  
   const alternatives = getAlternativeAnswers(items);
   const normalizedGuess = guess.toLowerCase().replace(/[\s\-_]/g, "");
 
@@ -120,4 +140,27 @@ export function checkAnswerWithAlternatives(
     const normalizedAlt = alt.toLowerCase().replace(/[\s\-_]/g, "");
     return normalizedGuess === normalizedAlt;
   });
+}
+
+/**
+ * Check answer for any puzzle type (supports both predefined and generated)
+ */
+export function checkPuzzleAnswer(
+  guess: string,
+  puzzle: Puzzle
+): boolean {
+  const normalizedGuess = guess.toLowerCase().replace(/[\s\-_]/g, "");
+  const normalizedAnswer = puzzle.answer.toLowerCase().replace(/[\s\-_]/g, "");
+  
+  // Direct answer check
+  if (normalizedGuess === normalizedAnswer) {
+    return true;
+  }
+  
+  // If we have items, check alternatives
+  if (puzzle.items && puzzle.items.length > 0) {
+    return checkAnswerWithAlternatives(guess, puzzle.items);
+  }
+  
+  return false;
 }

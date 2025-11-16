@@ -4,6 +4,7 @@ export interface EmojiItem {
   word: string;
   emoji: string;
   difficulty: "easy" | "medium" | "hard";
+  category: "objects" | "actions" | "nature" | "food";
 }
 
 // EASY tier - Common objects, food, basic concepts (200+ items)
