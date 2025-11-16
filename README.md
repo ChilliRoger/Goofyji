@@ -2,8 +2,7 @@
 
 An interactive emoji-based word guessing game built with Next.js 14. Test your skills by decoding words from emoji combinations that increase in difficulty as you progress.
 
-![Goofyji Game](https://img.shields.io/badge/Next.js-14-black) ![React](https://img.shields.io/badge/React-18-blue) ![TypeScript](https://img.shields.io/badge/TypeScript-5-blue) ![License](https://img.shields.io/badge/License-MIT-green)
-
+![Goofyji Game](https://img.shields.io/badge/Next.js-14-black) ![React](https://img.shields.io/badge/React-18-blue) ![TypeScript](https://img.shields.io/badge/TypeScript-5-blue) 
 ## Features
 
 - **Infinite Rounds**: Continuous gameplay with randomly generated emoji puzzles
