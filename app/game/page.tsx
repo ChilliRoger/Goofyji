@@ -261,13 +261,6 @@ export default function GamePage() {
           showHintButton={!hintShown && !showRoundResult}
         />
       </div>
-
-      <div className="game-footer">
-        <p className="footer-tip">
-          💡 Type the word or phrase the emojis represent! Wrong answers won't
-          cost lives - only running out of time will! ⏱️
-        </p>
-      </div>
     </main>
   );
 }
