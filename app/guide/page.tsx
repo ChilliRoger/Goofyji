@@ -34,9 +34,7 @@ export default function GuidePage() {
           <button onClick={() => router.push("/")} className="back-button">
             ← Back to Home
           </button>
-          <h1 className="guide-title">
-            Emoji Guide
-          </h1>
+          <h1 className="guide-title">Emoji Guide</h1>
           <p className="guide-subtitle">
             Learn all the emojis and their meanings!
           </p>

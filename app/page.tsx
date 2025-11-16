@@ -24,17 +24,18 @@ export default function HomePage() {
   return (
     <main className="home-page">
       {showHelp && <HelpPopup onClose={() => setShowHelp(false)} />}
-      
+
       <div className="home-container">
-        <h1 className="game-title">
-           Goofyji 
-        </h1>
+        <h1 className="game-title">Goofyji</h1>
 
         <div className="header-buttons">
           <button onClick={() => setShowHelp(true)} className="help-button">
             ❓ Help
           </button>
-          <button onClick={() => router.push("/guide")} className="guide-button">
+          <button
+            onClick={() => router.push("/guide")}
+            className="guide-button"
+          >
             📖 Emoji Guide
           </button>
         </div>

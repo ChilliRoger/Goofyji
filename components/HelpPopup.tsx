@@ -7,9 +7,7 @@ export default function HelpPopup({ onClose }: HelpPopupProps) {
     <div className="popup-overlay" onClick={onClose}>
       <div className="help-popup" onClick={(e) => e.stopPropagation()}>
         <div className="help-header">
-          <h2>
-            How to Play
-          </h2>
+          <h2>How to Play</h2>
           <button onClick={onClose} className="close-button">
             ✕
           </button>
