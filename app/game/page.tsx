@@ -17,11 +17,6 @@ import {
   checkPuzzleAnswer,
   getHint,
 } from "@/lib/puzzleGenerator";
-import {
-  playCorrectSound,
-  playWrongSound,
-  playGameOverSound,
-} from "@/lib/soundManager";
 import type { Puzzle } from "@/lib/puzzleGenerator";
 
 export default function GamePage() {
@@ -78,7 +73,6 @@ export default function GamePage() {
     if (isCorrect) {
       // Correct answer - pause timer and show popup
       setIsTimerActive(false);
-      playCorrectSound();
       setScore(score + 1);
       setRoundResultCorrect(true);
       setShowRoundResult(true);
@@ -88,7 +82,6 @@ export default function GamePage() {
       });
     } else {
       // Wrong answer - show feedback but don't move to next round
-      playWrongSound();
       setIsShaking(true);
 
       setFeedback({
@@ -111,7 +104,6 @@ export default function GamePage() {
     if (gameOver || showRoundResult || timeUpProcessed) return;
 
     setTimeUpProcessed(true);
-    playWrongSound();
     const newLives = lives - 1;
     setLives(newLives);
     setIsShaking(true);
@@ -132,7 +124,6 @@ export default function GamePage() {
 
     // Check if game over
     if (newLives <= 0) {
-      playGameOverSound();
       setTimeout(() => {
         setGameOver(true);
         setShowRoundResult(false);

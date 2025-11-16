@@ -1,24 +1,15 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { playStartSound, preloadAllSounds } from "@/lib/soundManager";
+import { useState } from "react";
 import HelpPopup from "@/components/HelpPopup";
 
 export default function HomePage() {
   const router = useRouter();
   const [showHelp, setShowHelp] = useState(false);
 
-  useEffect(() => {
-    // Preload sounds on home page
-    preloadAllSounds();
-  }, []);
-
   const handleStartGame = () => {
-    playStartSound();
-    setTimeout(() => {
-      router.push("/game");
-    }, 300);
+    router.push("/game");
   };
 
   return (

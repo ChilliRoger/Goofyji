@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { generateRoast } from "@/lib/roastGenerator";
+import { playGameOverBuzzer } from "@/utils/gameOverSound";
 
 interface GameOverScreenProps {
   score: number;
@@ -19,6 +20,8 @@ export default function GameOverScreen({
   useEffect(() => {
     // Generate a new roast when component mounts
     setRoast(generateRoast());
+    // Play game over buzzer sound
+    playGameOverBuzzer();
   }, []);
 
   return (

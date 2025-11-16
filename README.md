@@ -1,27 +1,28 @@
-# 🎮 Goofyji - Emoji Guessing Game
+# Goofyji - Emoji Guessing Game
 
-A fun, engaging emoji-based word guessing game built with Next.js 14. Guess the word from emoji combinations that get progressively harder!
+An interactive emoji-based word guessing game built with Next.js 14. Test your skills by decoding words from emoji combinations that increase in difficulty as you progress.
 
 ![Goofyji Game](https://img.shields.io/badge/Next.js-14-black) ![React](https://img.shields.io/badge/React-18-blue) ![TypeScript](https://img.shields.io/badge/TypeScript-5-blue) ![License](https://img.shields.io/badge/License-MIT-green)
 
-## 🎯 Game Features
+## Features
 
-- **Infinite Rounds**: Endless emoji puzzles to keep you entertained
-- **Progressive Difficulty**: Starts easy and gets harder as you advance
+- **Infinite Rounds**: Continuous gameplay with randomly generated emoji puzzles
+- **Progressive Difficulty**: Complexity increases with each round
   - Rounds 1-5: 2 emojis (Easy)
   - Rounds 6-10: 3 emojis (Medium-Easy)
   - Rounds 11-15: 4 emojis (Medium)
   - Rounds 16-20: 4 emojis (Medium-Hard)
   - Rounds 21+: 5+ emojis (Very Hard)
-- **Lives System**: Start with 3 lives, lose one for each wrong answer
-- **Dynamic Puzzle Generation**: Over 400+ emoji items randomly combined
-- **Funny Sounds**: Sound effects for correct/wrong answers, game start, and game over
-- **Epic Roasts**: Get hilariously roasted when you lose!
-- **Hint System**: Get the first letter as a hint when stuck
-- **Confetti Celebration**: Visual celebration on correct answers
-- **Mobile Responsive**: Fully optimized for mobile, tablet, and desktop
+- **Lives System**: Three lives per game with strategic hint usage
+- **Dynamic Puzzle Generation**: Over 400 emoji items with intelligent combination logic
+- **Audio Feedback**: Game over buzzer sound for enhanced user experience
+- **Humorous Game Over Messages**: Entertaining roast messages when you lose
+- **Hint System**: First letter hints available when needed
+- **Visual Feedback**: Confetti celebration on correct answers
+- **Responsive Design**: Fully optimized for mobile, tablet, and desktop devices
+- **Comic Theme**: Beige color palette with custom textures and bold typography
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -59,74 +60,85 @@ pnpm dev
 
 4. Open [http://localhost:3000](http://localhost:3000) in your browser to play!
 
-## 🎮 How to Play
+## How to Play
 
 1. **Start the Game**: Click the "Start Game" button on the home page
-2. **Read the Emojis**: Look at the emoji combination displayed
-3. **Type Your Guess**: Enter the word or phrase the emojis represent
-4. **Submit**: Click Submit or press Enter
-5. **Correct Answer**: Earn points and move to the next harder puzzle! 🎉
-6. **Wrong Answer**: Lose a life and try again! ❌
-7. **Game Over**: When you run out of lives, get roasted and try again! 🔥
+2. **View the Puzzle**: Examine the emoji combination displayed
+3. **Enter Your Guess**: Type the word or phrase the emojis represent
+4. **Submit**: Click Submit or press Enter to check your answer
+5. **Correct Answer**: Earn points and advance to a more difficult puzzle
+6. **Wrong Answer**: Lose a life and attempt again
+7. **Game Over**: When all lives are depleted, view your final score and restart
 
-### Tips:
+### Game Rules
 
-- Answers can be compound words (e.g., "hotdog" or "hot dog")
-- Case doesn't matter
-- Spaces, hyphens, and underscores are ignored
-- Use the hint button to get the first letter
-- Don't take the roasts personally! 😄
+- Answers can be compound words with flexible formatting (e.g., "hotdog", "hot dog", "hot-dog")
+- Input is case-insensitive
+- Spaces, hyphens, and underscores are normalized during validation
+- Use the hint button to reveal the first letter of the answer
+- Each game starts with 3 lives
+- Time-based rounds with visual timer feedback
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Framework**: [Next.js 14](https://nextjs.org/) with App Router
 - **UI Library**: [React 18](https://react.dev/)
 - **Language**: [TypeScript](https://www.typescriptlang.org/)
-- **Styling**: Plain CSS with CSS animations
-- **Effects**: [react-confetti](https://github.com/alampros/react-confetti)
-- **Sounds**: Free sound effects from [Freesound.org](https://freesound.org/)
+- **Styling**: CSS with custom properties, animations, and responsive design
+- **Visual Effects**: [react-confetti](https://github.com/alampros/react-confetti)
+- **Audio**: Web Audio API for game over sound effects
+- **Fonts**: Google Fonts (Pixelify Sans)
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 Goofyji/
 ├── app/
 │   ├── game/
-│   │   └── page.tsx          # Main game page
-│   ├── layout.tsx             # Root layout
+│   │   └── page.tsx          # Main game page with timer and game logic
+│   ├── guide/
+│   │   └── page.tsx          # Emoji reference guide page
+│   ├── layout.tsx             # Root layout with font imports
 │   ├── page.tsx               # Home/landing page
-│   └── globals.css            # Global styles
+│   └── globals.css            # Global styles and theme
 ├── components/
+│   ├── CategorySelector.tsx   # Category selection screen
 │   ├── EmojiDisplay.tsx       # Emoji puzzle display
 │   ├── FeedbackMessage.tsx    # Feedback with confetti
-│   ├── GameOverScreen.tsx     # Game over overlay
-│   ├── GuessInput.tsx         # Input for user guesses
-│   ├── LivesCounter.tsx       # Hearts display
-│   └── ScoreCounter.tsx       # Score and round display
+│   ├── GameOverScreen.tsx     # Game over overlay with roasts
+│   ├── GuessInput.tsx         # Input component for user guesses
+│   ├── HelpPopup.tsx          # Help/instructions popup
+│   ├── LivesCounter.tsx       # Lives display (hearts)
+│   ├── RoundResult.tsx        # Round result display
+│   ├── ScoreCounter.tsx       # Score and round display
+│   └── Timer.tsx              # Visual countdown timer
 ├── lib/
-│   ├── emojiData.ts           # 400+ emoji items database
-│   ├── puzzleGenerator.ts     # Puzzle generation logic
-│   ├── roastGenerator.ts      # Funny roast generator
-│   └── soundManager.ts        # Sound system
-├── public/
-│   └── sounds/                # Sound effects (optional local hosting)
+│   ├── categorizedEmojiData.ts # Categorized emoji database (400+ items)
+│   ├── emojiData.ts           # Emoji items by difficulty
+│   ├── puzzleGenerator.ts     # Puzzle generation algorithm
+│   └── roastGenerator.ts      # Roast message generator
+├── utils/
+│   └── gameOverSound.ts       # Web Audio API sound generation
 ├── package.json
 ├── tsconfig.json
-├── next.config.js
+├── next.config.ts
 └── README.md
 ```
 
-## 🎨 Customization
+## Customization
 
 ### Adding More Emoji Items
 
-Edit `lib/emojiData.ts` to add more emoji items to any difficulty tier:
+Edit `lib/categorizedEmojiData.ts` to add items to specific categories:
 
 ```typescript
-const easyItems: EmojiItem[] = [
-  { word: "newword", emoji: "🆕", difficulty: "easy" },
-  // ... more items
-];
+export const categorizedEmojiData: CategoryData = {
+  food: [
+    { word: "newitem", emoji: "🆕", difficulty: "easy" },
+    // Additional items
+  ],
+  // Other categories
+};
 ```
 
 ### Adjusting Difficulty
@@ -135,138 +147,87 @@ Modify the difficulty scaling in `lib/puzzleGenerator.ts`:
 
 ```typescript
 export function generatePuzzle(round: number): Puzzle {
-  // Adjust the round thresholds here
+  // Adjust the round thresholds
   if (round <= 5) {
-    // Easy logic
+    // Easy difficulty logic
   }
-  // ...
+  // Additional difficulty tiers
 }
 ```
 
-### Changing Sounds
+### Customizing Sound
 
-Replace the sound URLs in `lib/soundManager.ts` with your own:
+Modify the Web Audio API parameters in `utils/gameOverSound.ts`:
 
 ```typescript
-export const SOUND_URLS = {
-  correct: ["your-sound-url.mp3"],
-  // ...
-};
+// Adjust frequency, gain, or duration
+oscillator.frequency.setValueAtTime(150, now);
+gainNode.gain.setValueAtTime(0.3, now);
 ```
 
-### Styling
+### Theme Customization
 
-All styles are in `app/globals.css`. Modify CSS variables in `:root` to change the theme:
+All styles are in `app/globals.css`. Modify CSS custom properties to change colors:
 
 ```css
 :root {
-  --primary-color: #ff6b6b;
-  --secondary-color: #4ecdc4;
-  /* ... more variables */
+  --color-beige: #e8d5b7;
+  --color-terracotta: #c65d3b;
+  --color-teal: #3d7c85;
+  --color-gold: #e8b86d;
 }
 ```
 
-## 🌐 Deployment
+## Deployment
 
-### Deploy to Vercel (Recommended - Free)
+### Vercel Deployment (Recommended)
 
-The easiest way to deploy is using [Vercel](https://vercel.com):
+Deploy to [Vercel](https://vercel.com) for optimal Next.js hosting:
 
-1. Push your code to GitHub
-2. Go to [Vercel](https://vercel.com) and sign in with GitHub
-3. Click "New Project"
-4. Import your `Goofyji` repository
+1. Push your code to a GitHub repository
+2. Sign in to Vercel with your GitHub account
+3. Click "New Project" and import your repository
+4. Configure build settings (auto-detected for Next.js)
 5. Click "Deploy"
-6. Done! Your game is live 🎉
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/ChilliRoger/Goofyji)
 
-### Other Free Deployment Options
+### Alternative Deployment Platforms
 
-- **Netlify**: Connect your GitHub repo at [netlify.com](https://www.netlify.com/)
-- **GitHub Pages**: Use `next export` (requires static export configuration)
-- **Railway**: Deploy at [railway.app](https://railway.app/)
+- **Netlify**: GitHub integration available at [netlify.com](https://www.netlify.com/)
+- **Railway**: Container-based deployment at [railway.app](https://railway.app/)
+- **AWS Amplify**: Serverless deployment with AWS infrastructure
+- **DigitalOcean App Platform**: Managed application hosting
 
-## 🧪 Testing
+## Testing
 
 ### Manual Testing Checklist
 
-- [ ] Home page loads correctly
-- [ ] Start button plays sound and navigates to game
-- [ ] Emojis display properly
-- [ ] Guess input accepts text and submits
-- [ ] Correct answers increment score and generate new puzzle
-- [ ] Wrong answers decrement lives
-- [ ] Hint button shows first letter
-- [ ] Game over screen appears when lives = 0
-- [ ] Roast message is displayed and randomized
-- [ ] Restart button resets game state
-- [ ] Difficulty increases with rounds
-- [ ] Sound effects play correctly
-- [ ] Confetti appears on correct guess
-- [ ] Responsive on mobile devices
-- [ ] Works with different answer formats (spaces, hyphens, etc.)
+- [ ] Home page loads and displays correctly
+- [ ] Start button navigates to category selection
+- [ ] Category selection displays all available categories
+- [ ] Game page displays emojis properly
+- [ ] Guess input accepts text and validates on submit
+- [ ] Correct answers increment score and advance to next puzzle
+- [ ] Wrong answers decrement lives with appropriate feedback
+- [ ] Timer countdown functions correctly
+- [ ] Hint button reveals first letter
+- [ ] Game over screen appears when lives reach zero
+- [ ] Game over buzzer sound plays without lag
+- [ ] Roast messages display and vary on each game over
+- [ ] Try Again button redirects to home page
+- [ ] Difficulty progression works across rounds
+- [ ] Confetti animation triggers on correct answers
+- [ ] Help popup displays game instructions
+- [ ] Guide page shows all emoji categories
+- [ ] Responsive layout works on mobile devices (480px, 768px breakpoints)
+- [ ] Answer validation handles various formats (spaces, hyphens, case)
 
-### Browser Testing
+### Browser Compatibility
 
-Test on:
+Tested and supported on:
 
-- Chrome/Edge
-- Firefox
-- Safari
+- Chrome/Edge (v90+)
+- Firefox (v88+)
+- Safari (v14+)
 - Mobile browsers (iOS Safari, Chrome Mobile)
-
-## 📝 License
-
-This project is licensed under the MIT License - see below for details:
-
-```
-MIT License
-
-Copyright (c) 2025 ChilliRoger
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
-
-## 🙏 Acknowledgments
-
-- Sound effects from [Freesound.org](https://freesound.org/) (Creative Commons)
-- Confetti library: [react-confetti](https://github.com/alampros/react-confetti)
-- Built with [Next.js](https://nextjs.org/)
-- Emoji support from Unicode Consortium
-
-## 🤝 Contributing
-
-Contributions are welcome! Feel free to:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📧 Contact
-
-ChilliRoger - [@ChilliRoger](https://github.com/ChilliRoger)
-
-Project Link: [https://github.com/ChilliRoger/Goofyji](https://github.com/ChilliRoger/Goofyji)
-
----
-
-**Have fun playing Goofyji! Don't get roasted too hard! 🔥😄**
