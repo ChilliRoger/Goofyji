@@ -1,9 +1,9 @@
-import type { Metadata } from 'next';
-import './globals.css';
+import type { Metadata } from "next";
+import "./globals.css";
 
 export const metadata: Metadata = {
-  title: 'Goofyji - Emoji Guessing Game',
-  description: 'Guess the word from emojis! Gets harder as you go!',
+  title: "Goofyji - Emoji Guessing Game",
+  description: "Guess the word from emojis! Gets harder as you go!",
 };
 
 export default function RootLayout({

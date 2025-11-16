@@ -1,18 +1,21 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import Confetti from 'react-confetti';
+import { useEffect, useState } from "react";
+import Confetti from "react-confetti";
 
 interface FeedbackMessageProps {
-  type: 'correct' | 'wrong' | 'hint' | null;
+  type: "correct" | "wrong" | "hint" | null;
   message: string;
 }
 
-export default function FeedbackMessage({ type, message }: FeedbackMessageProps) {
+export default function FeedbackMessage({
+  type,
+  message,
+}: FeedbackMessageProps) {
   const [showConfetti, setShowConfetti] = useState(false);
 
   useEffect(() => {
-    if (type === 'correct') {
+    if (type === "correct") {
       setShowConfetti(true);
       const timer = setTimeout(() => setShowConfetti(false), 3000);
       return () => clearTimeout(timer);
@@ -33,9 +36,9 @@ export default function FeedbackMessage({ type, message }: FeedbackMessageProps)
         />
       )}
       <div className={`feedback-message ${type}`}>
-        {type === 'correct' && '🎉 '}
-        {type === 'wrong' && '❌ '}
-        {type === 'hint' && '💡 '}
+        {type === "correct" && "🎉 "}
+        {type === "wrong" && "❌ "}
+        {type === "hint" && "💡 "}
         {message}
       </div>
     </>

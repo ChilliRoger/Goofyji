@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
-import { playStartSound, preloadAllSounds } from '@/lib/soundManager';
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { playStartSound, preloadAllSounds } from "@/lib/soundManager";
 
 export default function HomePage() {
   const router = useRouter();
@@ -15,7 +15,7 @@ export default function HomePage() {
   const handleStartGame = () => {
     playStartSound();
     setTimeout(() => {
-      router.push('/game');
+      router.push("/game");
     }, 300);
   };
 
@@ -27,7 +27,7 @@ export default function HomePage() {
           Goofyji
           <span className="title-emoji">🎮</span>
         </h1>
-        
+
         <p className="game-description">
           Guess the word from emojis!
           <br />
@@ -44,12 +44,20 @@ export default function HomePage() {
             <span>Increasing Difficulty</span>
           </div>
           <div className="feature">
+            <span className="feature-emoji">⏱️</span>
+            <span>15 Second Timer</span>
+          </div>
+          <div className="feature">
             <span className="feature-emoji">❤️</span>
             <span>3 Lives</span>
           </div>
           <div className="feature">
             <span className="feature-emoji">🔥</span>
             <span>Epic Roasts</span>
+          </div>
+          <div className="feature">
+            <span className="feature-emoji">🎵</span>
+            <span>Funny Sounds</span>
           </div>
         </div>
 
@@ -62,9 +70,11 @@ export default function HomePage() {
           <ul>
             <li>Look at the emoji combination</li>
             <li>Type the word or phrase they represent</li>
+            <li>You have 15 seconds per round ⏱️</li>
             <li>Get it right to earn points!</li>
-            <li>Get it wrong and lose a life 💔</li>
-            <li>Survive as long as you can!</li>
+            <li>Wrong answer? No problem - see the answer & continue!</li>
+            <li>Run out of time = lose a life 💔</li>
+            <li>Lose all 3 lives = Game Over!</li>
           </ul>
         </div>
       </div>

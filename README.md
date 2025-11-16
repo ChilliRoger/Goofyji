@@ -31,12 +31,14 @@ A fun, engaging emoji-based word guessing game built with Next.js 14. Guess the 
 ### Installation
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/ChilliRoger/Goofyji.git
 cd Goofyji
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 # or
@@ -46,6 +48,7 @@ pnpm install
 ```
 
 3. Run the development server:
+
 ```bash
 npm run dev
 # or
@@ -67,6 +70,7 @@ pnpm dev
 7. **Game Over**: When you run out of lives, get roasted and try again! 🔥
 
 ### Tips:
+
 - Answers can be compound words (e.g., "hotdog" or "hot dog")
 - Case doesn't matter
 - Spaces, hyphens, and underscores are ignored
@@ -120,7 +124,7 @@ Edit `lib/emojiData.ts` to add more emoji items to any difficulty tier:
 
 ```typescript
 const easyItems: EmojiItem[] = [
-  { word: 'newword', emoji: '🆕', difficulty: 'easy' },
+  { word: "newword", emoji: "🆕", difficulty: "easy" },
   // ... more items
 ];
 ```
@@ -145,7 +149,7 @@ Replace the sound URLs in `lib/soundManager.ts` with your own:
 
 ```typescript
 export const SOUND_URLS = {
-  correct: ['your-sound-url.mp3'],
+  correct: ["your-sound-url.mp3"],
   // ...
 };
 ```
@@ -206,6 +210,7 @@ The easiest way to deploy is using [Vercel](https://vercel.com):
 ### Browser Testing
 
 Test on:
+
 - Chrome/Edge
 - Firefox
 - Safari

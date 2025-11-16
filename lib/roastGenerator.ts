@@ -3,87 +3,87 @@
  */
 
 const adjectives = [
-  'clueless',
-  'goofy',
-  'dense',
-  'dizzy',
-  'confused',
-  'lost',
-  'bewildered',
-  'befuddled',
-  'dazed',
-  'silly',
-  'ridiculous',
-  'absurd',
-  'hopeless',
-  'useless',
-  'pathetic',
-  'laughable',
-  'pitiful',
-  'miserable',
-  'terrible',
-  'awful',
-  'dreadful',
-  'abysmal',
-  'atrocious',
-  'deplorable',
-  'lamentable',
+  "clueless",
+  "goofy",
+  "dense",
+  "dizzy",
+  "confused",
+  "lost",
+  "bewildered",
+  "befuddled",
+  "dazed",
+  "silly",
+  "ridiculous",
+  "absurd",
+  "hopeless",
+  "useless",
+  "pathetic",
+  "laughable",
+  "pitiful",
+  "miserable",
+  "terrible",
+  "awful",
+  "dreadful",
+  "abysmal",
+  "atrocious",
+  "deplorable",
+  "lamentable",
 ];
 
 const nouns = [
-  'rock',
-  'toaster',
-  'doorknob',
-  'potato',
-  'brick',
-  'mop',
-  'puddle',
-  'pancake',
-  'noodle',
-  'banana',
-  'turnip',
-  'walnut',
-  'pebble',
-  'sponge',
-  'napkin',
-  'sock',
-  'lamppost',
-  'shoelace',
-  'paperclip',
-  'rubber duck',
-  'garden gnome',
-  'traffic cone',
-  'pool noodle',
-  'wet blanket',
-  'expired coupon',
+  "rock",
+  "toaster",
+  "doorknob",
+  "potato",
+  "brick",
+  "mop",
+  "puddle",
+  "pancake",
+  "noodle",
+  "banana",
+  "turnip",
+  "walnut",
+  "pebble",
+  "sponge",
+  "napkin",
+  "sock",
+  "lamppost",
+  "shoelace",
+  "paperclip",
+  "rubber duck",
+  "garden gnome",
+  "traffic cone",
+  "pool noodle",
+  "wet blanket",
+  "expired coupon",
 ];
 
 const verbs = [
-  'solve puzzles',
-  'dance',
-  'think',
-  'read emojis',
-  'play games',
-  'count to ten',
-  'tie shoes',
-  'remember things',
-  'understand jokes',
-  'win at anything',
-  'complete tasks',
-  'focus',
-  'concentrate',
-  'pay attention',
-  'learn',
-  'improve',
-  'succeed',
-  'accomplish goals',
-  'follow directions',
-  'make sense',
-  'be helpful',
-  'function properly',
-  'work correctly',
-  'operate normally',
-  'exist productively',
+  "solve puzzles",
+  "dance",
+  "think",
+  "read emojis",
+  "play games",
+  "count to ten",
+  "tie shoes",
+  "remember things",
+  "understand jokes",
+  "win at anything",
+  "complete tasks",
+  "focus",
+  "concentrate",
+  "pay attention",
+  "learn",
+  "improve",
+  "succeed",
+  "accomplish goals",
+  "follow directions",
+  "make sense",
+  "be helpful",
+  "function properly",
+  "work correctly",
+  "operate normally",
+  "exist productively",
 ];
 
 const roastTemplates = [
@@ -108,15 +108,16 @@ const roastTemplates = [
  * Generate a random roast statement
  */
 export function generateRoast(): string {
-  const template = roastTemplates[Math.floor(Math.random() * roastTemplates.length)];
+  const template =
+    roastTemplates[Math.floor(Math.random() * roastTemplates.length)];
   const adjective = adjectives[Math.floor(Math.random() * adjectives.length)];
   const noun = nouns[Math.floor(Math.random() * nouns.length)];
   const verb = verbs[Math.floor(Math.random() * verbs.length)];
 
   return template
-    .replace('{adjective}', adjective)
-    .replace('{noun}', noun)
-    .replace('{verb}', verb);
+    .replace("{adjective}", adjective)
+    .replace("{noun}", noun)
+    .replace("{verb}", verb);
 }
 
 /**
@@ -133,16 +134,16 @@ export function generateMultipleRoasts(count: number = 3): string[] {
     } while (usedTemplates.has(templateIndex));
 
     usedTemplates.add(templateIndex);
-    
+
     const template = roastTemplates[templateIndex];
     const adjective = adjectives[Math.floor(Math.random() * adjectives.length)];
     const noun = nouns[Math.floor(Math.random() * nouns.length)];
     const verb = verbs[Math.floor(Math.random() * verbs.length)];
 
     const roast = template
-      .replace('{adjective}', adjective)
-      .replace('{noun}', noun)
-      .replace('{verb}', verb);
+      .replace("{adjective}", adjective)
+      .replace("{noun}", noun)
+      .replace("{verb}", verb);
 
     roasts.push(roast);
   }

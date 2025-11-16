@@ -14,14 +14,14 @@
   --success-color: #00b894;
   --error-color: #d63031;
   --warning-color: #fdcb6e;
-  
-  --font-primary: 'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', cursive;
-  --font-secondary: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  
+
+  --font-primary: "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive;
+  --font-secondary: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
   --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
   --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.15);
   --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.2);
-  
+
   --border-radius: 12px;
   --transition: all 0.3s ease;
 }
@@ -86,7 +86,11 @@ body {
 }
 
 .feature {
-  background: linear-gradient(135deg, var(--accent-color), var(--warning-color));
+  background: linear-gradient(
+    135deg,
+    var(--accent-color),
+    var(--warning-color)
+  );
   padding: 15px;
   border-radius: var(--border-radius);
   font-weight: bold;
@@ -95,6 +99,7 @@ body {
   gap: 10px;
   box-shadow: var(--shadow-sm);
   transition: var(--transition);
+  font-size: 0.9rem;
 }
 
 .feature:hover {
@@ -158,7 +163,7 @@ body {
 }
 
 .instructions li:before {
-  content: '✨';
+  content: "✨";
   position: absolute;
   left: 0;
 }
@@ -251,6 +256,51 @@ body {
 .heart.dead {
   opacity: 0.3;
   filter: grayscale(100%);
+}
+
+/* TIMER */
+.timer-container {
+  background: var(--light-color);
+  border-radius: var(--border-radius);
+  padding: 20px 30px;
+  box-shadow: var(--shadow-md);
+  width: 100%;
+  max-width: 500px;
+}
+
+.timer-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.timer-icon {
+  font-size: 1.8rem;
+}
+
+.timer-value {
+  font-size: 2rem;
+  font-weight: bold;
+  font-family: var(--font-primary);
+  min-width: 60px;
+  text-align: center;
+}
+
+.timer-progress {
+  width: 100%;
+  height: 12px;
+  background: var(--gray-color);
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+}
+
+.timer-progress-bar {
+  height: 100%;
+  transition: width 1s linear, background-color 0.3s ease;
+  border-radius: 20px;
 }
 
 .game-content {
@@ -570,7 +620,8 @@ body {
 }
 
 @keyframes bounce {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0);
   }
   50% {
@@ -579,13 +630,21 @@ body {
 }
 
 @keyframes shake {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateX(0);
   }
-  10%, 30%, 50%, 70%, 90% {
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
     transform: translateX(-10px);
   }
-  20%, 40%, 60%, 80% {
+  20%,
+  40%,
+  60%,
+  80% {
     transform: translateX(10px);
   }
 }
@@ -603,7 +662,8 @@ body {
 }
 
 @keyframes rotate {
-  0%, 100% {
+  0%,
+  100% {
     transform: rotate(0deg);
   }
   25% {
@@ -615,7 +675,8 @@ body {
 }
 
 @keyframes float {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0);
   }
   50% {
@@ -624,7 +685,8 @@ body {
 }
 
 @keyframes heartbeat {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
   }
   25% {

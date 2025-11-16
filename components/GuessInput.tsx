@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useState, FormEvent } from 'react';
+import { useState, FormEvent } from "react";
 
 interface GuessInputProps {
   onSubmit: (guess: string) => void;
@@ -15,13 +15,13 @@ export default function GuessInput({
   disabled = false,
   showHintButton = true,
 }: GuessInputProps) {
-  const [guess, setGuess] = useState('');
+  const [guess, setGuess] = useState("");
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (guess.trim()) {
       onSubmit(guess.trim());
-      setGuess('');
+      setGuess("");
     }
   };
 
