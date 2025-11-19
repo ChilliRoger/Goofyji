@@ -3,14 +3,20 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import HelpPopup from "@/components/HelpPopup";
+import LoadingScreen from "@/components/LoadingScreen";
 
 export default function HomePage() {
   const router = useRouter();
   const [showHelp, setShowHelp] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleStartGame = () => {
     router.push("/game");
   };
+
+  if (isLoading) {
+    return <LoadingScreen onLoadingComplete={() => setIsLoading(false)} />;
+  }
 
   return (
     <main className="home-page">

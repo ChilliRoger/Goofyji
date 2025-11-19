@@ -53,7 +53,7 @@ export default function GuessInput({
           className="hint-button"
           disabled={disabled}
         >
-          💡 Hint
+          Hint
         </button>
       )}
     </div>

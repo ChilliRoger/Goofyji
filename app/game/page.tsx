@@ -43,14 +43,33 @@ export default function GamePage() {
   const [usedPuzzleAnswers, setUsedPuzzleAnswers] = useState<Set<string>>(
     new Set()
   );
+  const [usedPuzzleIds, setUsedPuzzleIds] = useState<Set<string>>(new Set());
   const [timeUpProcessed, setTimeUpProcessed] = useState(false);
+  const [highScore, setHighScore] = useState(0);
+
+  // Load high score from localStorage on mount
+  useEffect(() => {
+    const savedHighScore = localStorage.getItem("goofyji-highscore");
+    if (savedHighScore) {
+      setHighScore(parseInt(savedHighScore, 10));
+    }
+  }, []);
+
+  // Update high score when score changes
+  useEffect(() => {
+    if (score > highScore) {
+      setHighScore(score);
+      localStorage.setItem("goofyji-highscore", score.toString());
+    }
+  }, [score, highScore]);
 
   // Generate initial puzzle
   useEffect(() => {
     if (category) {
-      const newPuzzle = generatePuzzle(1, category);
+      const newPuzzle = generatePuzzle(1, category, usedPuzzleIds);
       setPuzzle(newPuzzle);
       setUsedPuzzleAnswers(new Set([newPuzzle.answer]));
+      setUsedPuzzleIds(new Set([newPuzzle.puzzleId]));
       setIsTimerActive(true);
       setTimerReset((prev) => prev + 1);
     }
@@ -142,17 +161,10 @@ export default function GamePage() {
     setRound(nextRound);
 
     // Generate a new puzzle that hasn't been used
-    let newPuzzle = generatePuzzle(nextRound, category!);
-    let attempts = 0;
-    const maxAttempts = 50;
+    const newPuzzle = generatePuzzle(nextRound, category!, usedPuzzleIds);
 
-    // Try to find a puzzle that hasn't been used yet
-    while (usedPuzzleAnswers.has(newPuzzle.answer) && attempts < maxAttempts) {
-      newPuzzle = generatePuzzle(nextRound, category!);
-      attempts++;
-    }
-
-    // Add the new puzzle answer to used set
+    // Add the new puzzle ID to used set
+    setUsedPuzzleIds((prev) => new Set([...prev, newPuzzle.puzzleId]));
     setUsedPuzzleAnswers((prev) => new Set([...prev, newPuzzle.answer]));
 
     setPuzzle(newPuzzle);
@@ -195,9 +207,11 @@ export default function GamePage() {
     setHintShown(false);
     setTimeUpProcessed(false);
     setUsedPuzzleAnswers(new Set());
-    const newPuzzle = generatePuzzle(1, category!);
+    setUsedPuzzleIds(new Set());
+    const newPuzzle = generatePuzzle(1, category!, new Set());
     setPuzzle(newPuzzle);
     setUsedPuzzleAnswers(new Set([newPuzzle.answer]));
+    setUsedPuzzleIds(new Set([newPuzzle.puzzleId]));
     setIsTimerActive(true);
     setTimerReset((prev) => prev + 1);
   };
@@ -238,7 +252,7 @@ export default function GamePage() {
         <button onClick={handleQuit} className="quit-button">
           ← Quit
         </button>
-        <ScoreCounter score={score} round={round} />
+        <ScoreCounter score={score} round={round} highScore={highScore} />
         <LivesCounter lives={lives} />
       </div>
 

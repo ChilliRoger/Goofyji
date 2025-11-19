@@ -5,6 +5,7 @@ import {
 } from "./categorizedEmojiData";
 import {
   getRandomMeaningfulPuzzle,
+  getMeaningfulPuzzles,
   MeaningfulPuzzle,
 } from "./meaningfulPuzzles";
 
@@ -13,15 +14,18 @@ export interface Puzzle {
   answer: string;
   difficulty: "easy" | "medium" | "hard";
   items: EmojiItem[] | CategorizedEmojiItem[];
+  puzzleId: string; // Unique identifier for tracking
 }
 
 /**
  * Generate a puzzle based on the current round/score with category support
  * Uses predefined meaningful word combinations for better gameplay
+ * Ensures no puzzle repeats within a session
  */
 export function generatePuzzle(
   round: number,
-  category?: "objects" | "actions" | "nature" | "food" | "mixed"
+  category?: "objects" | "actions" | "nature" | "food" | "mixed",
+  usedPuzzleIds?: Set<string>
 ): Puzzle {
   let difficulty: "easy" | "medium" | "hard";
 
@@ -36,21 +40,32 @@ export function generatePuzzle(
 
   // Try to get a meaningful puzzle first
   if (category) {
-    const meaningfulPuzzle = getRandomMeaningfulPuzzle(category, difficulty);
+    const meaningfulPuzzles = getMeaningfulPuzzles(category, difficulty);
+    
+    if (meaningfulPuzzles.length > 0) {
+      // Filter out already used puzzles
+      const availablePuzzles = meaningfulPuzzles.filter(
+        (p: MeaningfulPuzzle) => !usedPuzzleIds?.has(`meaningful-${p.answer}`)
+      );
 
-    if (meaningfulPuzzle) {
-      return {
-        emojis: meaningfulPuzzle.emojis.join(" + "),
-        answer: meaningfulPuzzle.answer,
-        difficulty: meaningfulPuzzle.difficulty,
-        items: [], // We don't need items for predefined puzzles
-      };
+      if (availablePuzzles.length > 0) {
+        const meaningfulPuzzle = availablePuzzles[Math.floor(Math.random() * availablePuzzles.length)];
+        return {
+          emojis: meaningfulPuzzle.emojis.join(" + "),
+          answer: meaningfulPuzzle.answer,
+          difficulty: meaningfulPuzzle.difficulty,
+          items: [],
+          puzzleId: `meaningful-${meaningfulPuzzle.answer}`,
+        };
+      }
     }
   }
 
-  // Fallback to random combination if no meaningful puzzle found
+  // Fallback to random combination with uniqueness guarantee
   let itemCount: number;
   let selectedItems: CategorizedEmojiItem[] | EmojiItem[];
+  let attempts = 0;
+  const maxAttempts = 100;
 
   if (round <= 5) {
     itemCount = 2;
@@ -64,14 +79,32 @@ export function generatePuzzle(
     itemCount = 4;
   }
 
-  // Use category-based selection if category is provided
-  if (category) {
-    selectedItems = getRandomCategoryItems(category, difficulty, itemCount);
-  } else {
-    selectedItems = getRandomItemsFromTier(difficulty, itemCount);
-  }
+  // Keep generating until we find a unique combination
+  do {
+    if (category) {
+      selectedItems = getRandomCategoryItems(category, difficulty, itemCount);
+    } else {
+      selectedItems = getRandomItemsFromTier(difficulty, itemCount);
+    }
 
-  // Combine emojis and words with + separator
+    const answer = selectedItems.map((item) => item.word).join("");
+    const puzzleId = `generated-${answer}`;
+
+    if (!usedPuzzleIds?.has(puzzleId)) {
+      const emojis = selectedItems.map((item) => item.emoji).join(" + ");
+      return {
+        emojis,
+        answer,
+        difficulty,
+        items: selectedItems,
+        puzzleId,
+      };
+    }
+
+    attempts++;
+  } while (attempts < maxAttempts);
+
+  // If we exhausted attempts, just return the last generated puzzle
   const emojis = selectedItems.map((item) => item.emoji).join(" + ");
   const answer = selectedItems.map((item) => item.word).join("");
 
@@ -80,6 +113,7 @@ export function generatePuzzle(
     answer,
     difficulty,
     items: selectedItems,
+    puzzleId: `generated-${answer}-${Date.now()}`,
   };
 }
 
