@@ -6,7 +6,11 @@ interface ScoreCounterProps {
   highScore?: number;
 }
 
-export default function ScoreCounter({ score, round, highScore = 0 }: ScoreCounterProps) {
+export default function ScoreCounter({
+  score,
+  round,
+  highScore = 0,
+}: ScoreCounterProps) {
   return (
     <div className="score-counter">
       <div className="score-item">

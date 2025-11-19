@@ -41,7 +41,7 @@ export function generatePuzzle(
   // Try to get a meaningful puzzle first
   if (category) {
     const meaningfulPuzzles = getMeaningfulPuzzles(category, difficulty);
-    
+
     if (meaningfulPuzzles.length > 0) {
       // Filter out already used puzzles
       const availablePuzzles = meaningfulPuzzles.filter(
@@ -49,7 +49,8 @@ export function generatePuzzle(
       );
 
       if (availablePuzzles.length > 0) {
-        const meaningfulPuzzle = availablePuzzles[Math.floor(Math.random() * availablePuzzles.length)];
+        const meaningfulPuzzle =
+          availablePuzzles[Math.floor(Math.random() * availablePuzzles.length)];
         return {
           emojis: meaningfulPuzzle.emojis.join(" + "),
           answer: meaningfulPuzzle.answer,

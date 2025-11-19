@@ -6,7 +6,9 @@ interface LoadingScreenProps {
   onLoadingComplete: () => void;
 }
 
-export default function LoadingScreen({ onLoadingComplete }: LoadingScreenProps) {
+export default function LoadingScreen({
+  onLoadingComplete,
+}: LoadingScreenProps) {
   const [progress, setProgress] = useState(0);
   const [loadingText, setLoadingText] = useState("Loading emojis");
 
@@ -52,9 +54,9 @@ export default function LoadingScreen({ onLoadingComplete }: LoadingScreenProps)
           <span className="loading-emoji bounce-2">🎯</span>
           <span className="loading-emoji bounce-3">🎲</span>
         </div>
-        
+
         <h1 className="loading-title">Goofyji</h1>
-        
+
         <div className="loading-text-container">
           <p className="loading-text">{loadingText}...</p>
         </div>
@@ -62,7 +64,7 @@ export default function LoadingScreen({ onLoadingComplete }: LoadingScreenProps)
         <div className="loading-bar-container">
           <div className="loading-bar" style={{ width: `${progress}%` }}></div>
         </div>
-        
+
         <p className="loading-percentage">{progress}%</p>
       </div>
     </div>
